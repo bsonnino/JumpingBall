@@ -28,28 +28,25 @@ namespace JumpingBall
         public MainPage()
         {
             this.InitializeComponent();
-            Loaded += (s, e) =>
-            {
-                Canvas.SetLeft(Ball, ActualWidth / 2 - 40);
-                Canvas.SetTop(Ball, ActualHeight - 80);
-                var accelerometer = Accelerometer.GetDefault();
-                if (accelerometer == null)
-                {
-                    return;
-                }
-                accelerometer.ReadingChanged += async (s1, e1) =>
-                {
-                    await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        var magnitude = Math.Sqrt(
-                            e1.Reading.AccelerationX * e1.Reading.AccelerationX +
-                            e1.Reading.AccelerationY * e1.Reading.AccelerationY +
-                            e1.Reading.AccelerationZ * e1.Reading.AccelerationZ);
-                        if (magnitude > 1.5)
-                            JumpBall(magnitude);
 
-                    });
-                };
+            var accelerometer = Accelerometer.GetDefault();
+            if (accelerometer == null)
+            {
+                return;
+            }
+            accelerometer.ReadingChanged += async (s1, e1) =>
+            {
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    var magnitude = Math.Sqrt(
+                        e1.Reading.AccelerationX * e1.Reading.AccelerationX +
+                        e1.Reading.AccelerationY * e1.Reading.AccelerationY +
+                        e1.Reading.AccelerationZ * e1.Reading.AccelerationZ);
+                    if (magnitude > 1.5)
+                        JumpBall(magnitude);
+
+                });
+
             };
         }
 
@@ -57,13 +54,13 @@ namespace JumpingBall
         {
             var da = new DoubleAnimation()
             {
-                From = ActualHeight-80,
-                To = ActualHeight-80-acceleration * 200,
+                From = 0,
+                To = -acceleration * 200,
                 AutoReverse = true,
                 Duration = new Duration(TimeSpan.FromSeconds(1))
             };
-            Storyboard.SetTarget(da, Ball);
-            Storyboard.SetTargetProperty(da, "(Canvas.Top)");
+            Storyboard.SetTarget(da, Translation);
+            Storyboard.SetTargetProperty(da, "Y");
             var sb = new Storyboard();
             sb.Children.Add(da);
             sb.Begin();

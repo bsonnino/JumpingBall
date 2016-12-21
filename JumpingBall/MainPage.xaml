@@ -7,7 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Canvas Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Ellipse Width="80" Height="80" Fill="Red" x:Name="Ball"/>
-    </Canvas>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Ellipse Width="80" Height="80" Fill="Red" x:Name="Ball" 
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Bottom" 
+                 RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform>
+                <TranslateTransform x:Name="Translation" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
+    </Grid>
 </Page>
